@@ -1,0 +1,1 @@
+read -e -p "🌐 Enter new blockchain_rpc_endpoint URL: " r; echo; if [[ -z "$r" ]]; then echo "❌ Error: URL cannot be empty."; else sed -i "s|blockchain_rpc_endpoint = .*|blockchain_rpc_endpoint = \"$r\"|" "$HOME/0g-storage-node/run/config.toml" && echo "✅ blockchain_rpc_endpoint updated to: $r"; fi
