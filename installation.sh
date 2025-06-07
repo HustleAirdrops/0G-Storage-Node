@@ -53,12 +53,11 @@ curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.co
 # Step 7: Get private key from user
 echo ""
 echo "🔐 Enter your PRIVATE KEY (with or without 0x):"
-read -s PRIVATE_KEY
-PRIVATE_KEY=${PRIVATE_KEY#0x}  # Remove 0x prefix if present
-
-# Just show masked key
+read PRIVATE_KEY
+PRIVATE_KEY=${PRIVATE_KEY#0x}
 KEY_START=${PRIVATE_KEY:0:4}
 KEY_END=${PRIVATE_KEY: -4}
+echo -e "\033[A\r\033[K"
 echo "${KEY_START}****${KEY_END}"
 echo "✅ Private key inserted."
 
