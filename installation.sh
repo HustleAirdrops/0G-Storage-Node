@@ -2,7 +2,10 @@
 
 set -e
 
-if [ -d "$HOME/0g-storage-node" ]; then
+# Step 0: Go to home directory to keep everything relative to home
+cd "$HOME"
+
+if [ -d "0g-storage-node" ]; then
     echo "✅ 0g-storage-node is already installed. Exiting installer."
     return 0 2>/dev/null || exit 0
 fi
@@ -17,21 +20,21 @@ sudo apt install -y curl iptables build-essential git wget lz4 jq make cmake gcc
 if ! command -v rustc &> /dev/null; then
     echo "🔧 Installing Rust..."
     curl https://sh.rustup.rs -sSf | sh -s -- -y
-    source $HOME/.cargo/env
+    source "$HOME/.cargo/env"
 fi
 
-# Step 3: Install Go (check /usr/local/go/bin/go)
+# Step 3: Install Go (if not installed)
 if ! command -v go &> /dev/null; then
     echo "🔧 Installing Go..."
     wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz
     sudo rm -rf /usr/local/go
     sudo tar -C /usr/local -xzf go1.24.3.linux-amd64.tar.gz
     rm go1.24.3.linux-amd64.tar.gz
-    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-    source ~/.bashrc
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> "$HOME/.bashrc"
+    source "$HOME/.bashrc"
 fi
 
-# Step 4: Clone repo
+# Step 4: Clone repo (already in $HOME)
 echo "📁 Cloning 0g-storage-node repository..."
 git clone https://github.com/0glabs/0g-storage-node.git
 cd 0g-storage-node
@@ -43,9 +46,9 @@ echo "⚙️ Building node..."
 cargo build --release
 
 # Step 6: Setup config file
-rm -f $HOME/0g-storage-node/run/config.toml
-mkdir -p $HOME/0g-storage-node/run
-curl -o $HOME/0g-storage-node/run/config.toml https://raw.githubusercontent.com/Mayankgg01/0G-Storage-Node-Guide/main/config.toml
+rm -f "$HOME/0g-storage-node/run/config.toml"
+mkdir -p "$HOME/0g-storage-node/run"
+curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.com/Mayankgg01/0G-Storage-Node-Guide/main/config.toml
 
 # Step 7: Get private key from user
 echo ""
