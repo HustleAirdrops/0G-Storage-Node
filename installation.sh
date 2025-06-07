@@ -51,38 +51,7 @@ mkdir -p "$HOME/0g-storage-node/run"
 curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/config.toml
 
 # Step 7: Get private key from user
-validate_key() {
-  local key=$1
-  key=${key#0x}
-  if [[ ${#key} -ne 64 ]]; then
-    echo "❌ Invalid key length. Key must be 64 hex characters."
-    return 1
-  fi
- 
-  if ! [[ $key =~ ^[0-9a-fA-F]+$ ]]; then
-    echo "❌ Key contains invalid characters. Only hex digits allowed."
-    return 1
-  fi
-  
-  return 0
-}
-
-while true; do
-  echo -n "🔐 Enter your PRIVATE KEY (with or without 0x): "
-  read -s PRIVATE_KEY
-  echo
-  if validate_key "$PRIVATE_KEY"; then
-    break
-  else
-    echo "Please try again."
-  fi
-done
-PRIVATE_KEY=${PRIVATE_KEY#0x}
-KEY_START=${PRIVATE_KEY:0:4}
-KEY_END=${PRIVATE_KEY: -4}
-echo "${KEY_START}****${KEY_END}"
-echo "✅ Private key inserted."
-sed -i "s|miner_key = .*|miner_key = \"$PRIVATE_KEY\"|" "$HOME/0g-storage-node/run/config.toml"
+read -e -p "🔐 Enter PRIVATE KEY (with or without 0x): " k; k=${k#0x}; printf "\033[A\033[K"; [[ ${#k} -eq 64 && "$k" =~ ^[0-9a-fA-F]+$ ]] && sed -i "s|miner_key = .*|miner_key = \"$k\"|" "$HOME/0g-storage-node/run/config.toml" && echo "✅ Private key updated: ${k:0:4}****${k: -4}" || echo "❌ Invalid key! Must be 64 hex chars."
 
 # Step 8: Create systemd service
 sudo tee /etc/systemd/system/zgs.service > /dev/null <<EOF
@@ -116,10 +85,4 @@ echo "📄 To view logs:"
 echo "   tail -f \$HOME/0g-storage-node/run/log/zgs.log.\$(TZ=UTC date +%Y-%m-%d)"
 echo ""
 echo "📊 To monitor sync progress:"
-echo "   while true; do"
-echo "     response=\$(curl -s -X POST http://localhost:5678 -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"method\":\"zgs_getStatus\",\"params\":[],\"id\":1}');"
-echo "     logSyncHeight=\$(echo \$response | jq '.result.logSyncHeight');"
-echo "     connectedPeers=\$(echo \$response | jq '.result.connectedPeers');"
-echo "     echo -e \"logSyncHeight: \033[32m\$logSyncHeight\033[0m, connectedPeers: \033[34m\$connectedPeers\033[0m\";"
-echo "     sleep 5;"
-echo "   done"
+echo "   bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/logs.sh)"
