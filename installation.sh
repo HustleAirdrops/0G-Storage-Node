@@ -14,7 +14,7 @@ echo "🚀 Starting 0G Storage Node Auto Installer..."
 
 # Step 1: Update & install dependencies
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt install -y curl iptables build-essential git wget lz4 jq make cmake gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip screen ufw
+sudo apt install -y curl iptables build-essential git wget lz4 jq make cmake gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip screen ufw xdotool
 
 # Step 2: Install Rust (if not installed)
 if ! command -v rustc &> /dev/null; then
