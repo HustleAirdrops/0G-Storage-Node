@@ -57,8 +57,15 @@ read -s PRIVATE_KEY
 PRIVATE_KEY=${PRIVATE_KEY#0x}  # Remove 0x prefix if present
 
 # Step 8: Insert private key into config.toml
-CONFIG_PATH="$HOME/0g-storage-node/run/config.toml"
-sed -i "s/miner_key = .*/miner_key = \"$PRIVATE_KEY\"/" "$CONFIG_PATH"
+echo ""
+echo "🔐 Enter your PRIVATE KEY (with or without 0x):"
+read -s PRIVATE_KEY
+PRIVATE_KEY=${PRIVATE_KEY#0x}  # Remove 0x prefix if present
+
+# Just show masked key
+KEY_START=${PRIVATE_KEY:0:4}
+KEY_END=${PRIVATE_KEY: -4}
+echo "${KEY_START}****${KEY_END}"
 echo "✅ Private key inserted."
 
 # Step 9: Create systemd service
