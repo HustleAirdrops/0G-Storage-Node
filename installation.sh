@@ -2,33 +2,39 @@
 
 set -e
 
+if [ -d "$HOME/0g-storage-node" ]; then
+    echo "✅ 0g-storage-node is already installed. Exiting installer."
+    exit 0
+fi
+
 echo "🚀 Starting 0G Storage Node Auto Installer..."
 
 # Step 1: Update & install dependencies
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install -y curl iptables build-essential git wget lz4 jq make cmake gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip screen ufw
 
-# Step 2: Install Rust
-curl https://sh.rustup.rs -sSf | sh -s -- -y
-source $HOME/.cargo/env
-
-# Step 3: Install Go
-wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz
-sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf go1.24.3.linux-amd64.tar.gz
-rm go1.24.3.linux-amd64.tar.gz
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-source ~/.bashrc
-
-# Step 4: Clone repo only if not already present
-if [ ! -d "$HOME/0g-storage-node" ]; then
-    echo "📁 Cloning 0g-storage-node repo..."
-    git clone https://github.com/0glabs/0g-storage-node.git
-else
-    echo "✅ Repo folder exists, skipping clone."
+# Step 2: Install Rust (if not installed)
+if ! command -v rustc &> /dev/null; then
+    echo "🔧 Installing Rust..."
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    source $HOME/.cargo/env
 fi
 
-cd $HOME/0g-storage-node
+# Step 3: Install Go (check /usr/local/go/bin/go)
+if ! command -v go &> /dev/null; then
+    echo "🔧 Installing Go..."
+    wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz
+    sudo rm -rf /usr/local/go
+    sudo tar -C /usr/local -xzf go1.24.3.linux-amd64.tar.gz
+    rm go1.24.3.linux-amd64.tar.gz
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+    source ~/.bashrc
+fi
+
+# Step 4: Clone repo
+echo "📁 Cloning 0g-storage-node repository..."
+git clone https://github.com/0glabs/0g-storage-node.git
+cd 0g-storage-node
 git checkout v1.0.0
 git submodule update --init
 
@@ -36,23 +42,23 @@ git submodule update --init
 echo "⚙️ Building node..."
 cargo build --release
 
-# Step 6: Download fresh config file
+# Step 6: Setup config file
 rm -f $HOME/0g-storage-node/run/config.toml
 mkdir -p $HOME/0g-storage-node/run
 curl -o $HOME/0g-storage-node/run/config.toml https://raw.githubusercontent.com/Mayankgg01/0G-Storage-Node-Guide/main/config.toml
 
-# Step 7: Ask user for private key and sanitize it
+# Step 7: Get private key from user
 echo ""
 echo "🔐 Enter your PRIVATE KEY (with or without 0x):"
 read -s PRIVATE_KEY
-PRIVATE_KEY=${PRIVATE_KEY#0x}  # Remove 0x prefix if exists
+PRIVATE_KEY=${PRIVATE_KEY#0x}  # Remove 0x prefix if present
 
-# Step 8: Inject private key into config.toml
+# Step 8: Insert private key into config.toml
 CONFIG_PATH="$HOME/0g-storage-node/run/config.toml"
 sed -i "s/miner_key = .*/miner_key = \"$PRIVATE_KEY\"/" "$CONFIG_PATH"
-echo "✅ Private key inserted into config.toml"
+echo "✅ Private key inserted."
 
-# Step 9: Create systemd service (don't start yet)
+# Step 9: Create systemd service
 sudo tee /etc/systemd/system/zgs.service > /dev/null <<EOF
 [Unit]
 Description=ZGS Node
