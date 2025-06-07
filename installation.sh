@@ -51,15 +51,38 @@ mkdir -p "$HOME/0g-storage-node/run"
 curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.com/Mayankgg01/0G-Storage-Node-Guide/main/config.toml
 
 # Step 7: Get private key from user
-echo ""
-echo "🔐 Enter your PRIVATE KEY (with or without 0x):"
-read PRIVATE_KEY
+validate_key() {
+  local key=$1
+  key=${key#0x}
+  if [[ ${#key} -ne 64 ]]; then
+    echo "❌ Invalid key length. Key must be 64 hex characters."
+    return 1
+  fi
+ 
+  if ! [[ $key =~ ^[0-9a-fA-F]+$ ]]; then
+    echo "❌ Key contains invalid characters. Only hex digits allowed."
+    return 1
+  fi
+  
+  return 0
+}
+
+while true; do
+  echo -n "🔐 Enter your PRIVATE KEY (with or without 0x): "
+  read -s PRIVATE_KEY
+  echo
+  if validate_key "$PRIVATE_KEY"; then
+    break
+  else
+    echo "Please try again."
+  fi
+done
 PRIVATE_KEY=${PRIVATE_KEY#0x}
 KEY_START=${PRIVATE_KEY:0:4}
 KEY_END=${PRIVATE_KEY: -4}
-echo -e "\033[A\r\033[K"
 echo "${KEY_START}****${KEY_END}"
 echo "✅ Private key inserted."
+sed -i "s|miner_key = .*|miner_key = \"$PRIVATE_KEY\"|" "$HOME/0g-storage-node/run/config.toml"
 
 # Step 8: Create systemd service
 sudo tee /etc/systemd/system/zgs.service > /dev/null <<EOF
