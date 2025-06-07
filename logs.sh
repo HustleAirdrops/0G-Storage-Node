@@ -40,7 +40,7 @@ while true; do
   fi
 
   # Print new line every update
-  printf "🧱 Node:%7d | 🌍 Explorer:%7d | 🤝 Peers:%3d | 🚀 Speed: %3d blocks/sec | %s\n" "$localHeight" "$explorerHeight" "$peers" "$speed" "$status"
+  printf "🧱 Logs Block:%7d | 🌍 Live Block:%7d | 🤝 Peers:%3d | 🚀 Speed: %3d blocks/sec | %s\n" "$localHeight" "$explorerHeight" "$peers" "$speed" "$status"
 
-  sleep 10
+  sleep 5
 done
