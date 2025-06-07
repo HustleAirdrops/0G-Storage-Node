@@ -51,7 +51,7 @@ sudo systemctl start zgs
   ```bash
   tail -f ~/0g-storage-node/run/log/zgs.log.$(TZ=UTC date +%Y-%m-%d)
   ```
-  *(Keep log file size ~500MB)*
+<img src="logs.jpg" width="500px" alt="Logs">
 
 ---
 
@@ -60,7 +60,7 @@ sudo systemctl start zgs
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/logs.sh)
 ```
-- *(Keep block log file size ~500MB)*
+<img src="blocks.jpg" width="500px" alt="Blocks">
 
 ---
 
