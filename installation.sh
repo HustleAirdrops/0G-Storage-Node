@@ -48,7 +48,7 @@ cargo build --release
 # Step 6: Setup config file
 rm -f "$HOME/0g-storage-node/run/config.toml"
 mkdir -p "$HOME/0g-storage-node/run"
-curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.com/Mayankgg01/0G-Storage-Node-Guide/main/config.toml
+curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/config.toml
 
 # Step 7: Get private key from user
 validate_key() {
