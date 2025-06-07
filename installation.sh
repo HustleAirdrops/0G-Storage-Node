@@ -4,7 +4,7 @@ set -e
 
 if [ -d "$HOME/0g-storage-node" ]; then
     echo "✅ 0g-storage-node is already installed. Exiting installer."
-    exit 0
+    return 0 2>/dev/null || exit 0
 fi
 
 echo "🚀 Starting 0G Storage Node Auto Installer..."
