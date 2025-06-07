@@ -106,7 +106,10 @@ bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/
   *(Add your wallet address at the end)*
 
 ---
+## ⏳ Node Sync Information
 
+> **Note:** ⏳ Node sync can take 6-12 hours (depending on your internet speed and hardware). ⚡ Once syncing is complete, the node will run automatically — no manual intervention needed! 
+---
 ## 🙋 Need Help?
 
 - 💬 **Contact:** [@Legend_Aashish](https://t.me/Legend_Aashish)
