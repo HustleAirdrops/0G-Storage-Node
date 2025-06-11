@@ -35,12 +35,11 @@ while true; do
 
   if (( diff > 50 )); then
     status="🔴 BEHIND: $diff"
+    printf "🧱 Logs Block:%7d | 🌍 Live Block:%7d | 🤝 Peers:%3d | 🚀 Speed: %3d blocks/sec | %s\n" "$localHeight" "$explorerHeight" "$peers" "$speed" "$status"
   else
     status="🟢 SYNCED"
+    printf "🧱 Logs Block:%7d | 🌍 Live Block:%7d | 🤝 Peers:%3d | %s\n" "$localHeight" "$explorerHeight" "$peers" "$status"
   fi
-
-  # Print new line every update
-  printf "🧱 Logs Block:%7d | 🌍 Live Block:%7d | 🤝 Peers:%3d | 🚀 Speed: %3d blocks/sec | %s\n" "$localHeight" "$explorerHeight" "$peers" "$speed" "$status"
 
   sleep 5
 done
