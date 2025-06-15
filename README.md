@@ -83,7 +83,11 @@ rm -rf $HOME/0g-storage-node
      bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/rpc_change.sh)
      ```
 3. ✍️ **Paste new RPC when asked.**
-
+4. **Restart Node:**
+    ```bash
+    sudo systemctl stop zgs
+    sudo systemctl start zgs
+    ```
 ---
 
 ## 🔑 Change Private Key
