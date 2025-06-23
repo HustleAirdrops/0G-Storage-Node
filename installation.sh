@@ -50,8 +50,9 @@ rm -f "$HOME/0g-storage-node/run/config.toml"
 mkdir -p "$HOME/0g-storage-node/run"
 curl -o "$HOME/0g-storage-node/run/config.toml" https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/config.toml
 
-# Step 7: Get private key from user
+# Step 7: Get private key and rpc from user
 read -e -p "🔐 Enter PRIVATE KEY (with or without 0x): " k; k=${k#0x}; printf "\033[A\033[K"; [[ ${#k} -eq 64 && "$k" =~ ^[0-9a-fA-F]+$ ]] && sed -i "s|miner_key = .*|miner_key = \"$k\"|" "$HOME/0g-storage-node/run/config.toml" && echo "✅ Private key updated: ${k:0:4}****${k: -4}" || echo "❌ Invalid key! Must be 64 hex chars."
+read -e -p "🌐 Enter new blockchain_rpc_endpoint URL: " r; echo; if [[ -z "$r" ]]; then echo "❌ Error: URL cannot be empty."; else sed -i "s|blockchain_rpc_endpoint = .*|blockchain_rpc_endpoint = \"$r\"|" "$HOME/0g-storage-node/run/config.toml" && echo "✅ blockchain_rpc_endpoint updated to: $r"; fi
 
 # Step 8: Create systemd service
 sudo tee /etc/systemd/system/zgs.service > /dev/null <<EOF
