@@ -75,10 +75,20 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable zgs
 
-# Done
+# Step 9: Fast Sync - Auto Apply
 echo ""
-echo "🎉 Installation complete!"
-echo "👉 To start your node, run:"
+echo "⚡ Applying fast sync from block 294440..."
+sudo systemctl stop zgs
+rm -rf "$HOME/0g-storage-node/run/db/flow_db"
+wget https://github.com/Mayankgg01/0G-Storage-Node-Guide/releases/download/v1.0/flow_db.tar.gz \
+  -O "$HOME/0g-storage-node/run/db/flow_db.tar.gz"
+tar -xzvf "$HOME/0g-storage-node/run/db/flow_db.tar.gz" -C "$HOME/0g-storage-node/run/db/"
+sudo systemctl restart zgs
+
+# Final Message
+echo ""
+echo "🎉 Installation complete with fast sync!"
+echo "👉 To start your node manually (already started):"
 echo ""
 echo "   sudo systemctl start zgs"
 echo ""
