@@ -42,6 +42,7 @@ git checkout v1.0.0
 git submodule update --init
 
 # Step 5: Build node
+sudo apt install -y protobuf-compiler
 echo "⚙️ Building node..."
 cargo build --release
 
