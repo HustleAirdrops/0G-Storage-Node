@@ -38,7 +38,7 @@ fi
 echo "📁 Cloning 0g-storage-node repository..."
 git clone https://github.com/0glabs/0g-storage-node.git
 cd 0g-storage-node
-git checkout v1.0.0
+git checkout v1.1.0
 git submodule update --init
 
 # Step 5: Build node
@@ -78,12 +78,21 @@ sudo systemctl enable zgs
 
 # Step 9: Fast Sync - Auto Apply
 echo ""
-echo "⚡ Applying fast sync from block 294440..."
+echo "⚡ Starting node and waiting 30 seconds before applying fast sync..."
+sudo systemctl start zgs
+sleep 30
+
+echo "🛑 Stopping node to apply fast sync..."
 sudo systemctl stop zgs
 rm -rf "$HOME/0g-storage-node/run/db/flow_db"
+
+echo "⬇️ Downloading and Extracting fast sync database..."
 wget https://github.com/Mayankgg01/0G-Storage-Node-Guide/releases/download/v1.0/flow_db.tar.gz \
   -O "$HOME/0g-storage-node/run/db/flow_db.tar.gz"
+
 tar -xzvf "$HOME/0g-storage-node/run/db/flow_db.tar.gz" -C "$HOME/0g-storage-node/run/db/"
+
+echo "🚀 Restarting node with fast sync data..."
 sudo systemctl restart zgs
 
 # Final Message
