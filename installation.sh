@@ -87,7 +87,7 @@ sudo systemctl stop zgs
 rm -rf "$HOME/0g-storage-node/run/db/flow_db"
 
 echo "⬇️ Downloading and Extracting fast sync database..."
-wget https://github.com/Mayankgg01/0G-Storage-Node-Guide/releases/download/v1.0/flow_db.tar.gz \
+wget https://github.com/HustleAirdrops/0G-Storage-Node/releases/download/latest/flow_db.tar.gz \
   -O "$HOME/0g-storage-node/run/db/flow_db.tar.gz"
 
 tar -xzvf "$HOME/0g-storage-node/run/db/flow_db.tar.gz" -C "$HOME/0g-storage-node/run/db/"
