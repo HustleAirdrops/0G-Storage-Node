@@ -76,9 +76,9 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable zgs
 
-# Step 9: Fast Sync - Auto Apply
+# Step 9: Starting Node 
 echo ""
-echo "⚡ Starting node and waiting 30 seconds before applying fast sync..."
+echo "⚡ Starting node..."
 sudo systemctl start zgs
 
 # Final Message
