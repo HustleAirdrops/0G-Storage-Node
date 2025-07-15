@@ -38,7 +38,7 @@ fi
 echo "📁 Cloning 0g-storage-node repository..."
 git clone https://github.com/0glabs/0g-storage-node.git
 cd 0g-storage-node
-git checkout v1.1.0
+git checkout v1.0.0
 git submodule update --init
 
 # Step 5: Build node
