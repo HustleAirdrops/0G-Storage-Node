@@ -76,10 +76,24 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable zgs
 
-# Step 9: Starting Node 
+# Step 9: Fast Sync - Auto Apply
 echo ""
-echo "⚡ Starting node..."
+echo "⚡ Starting node and waiting 30 seconds before applying fast sync..."
 sudo systemctl start zgs
+sleep 30
+
+echo "🛑 Stopping node to apply fast sync..."
+sudo systemctl stop zgs
+rm -rf "$HOME/0g-storage-node/run/db/flow_db"
+
+echo "⬇️ Downloading and Extracting fast sync database..."
+wget https://github.com/HustleAirdrops/0G-Storage-Node/releases/download/latest/flow_db.tar.gz \
+  -O "$HOME/0g-storage-node/run/db/flow_db.tar.gz"
+
+tar -xzvf "https://github.com/HustleAirdrops/0G-Storage-Node/releases/download/Try/flow_db.tar.gz" -C "$HOME/0g-storage-node/run/db/"
+
+echo "🚀 Restarting node with fast sync data..."
+sudo systemctl restart zgs
 
 # Final Message
 echo ""
