@@ -40,7 +40,15 @@ sudo systemctl start zgs
 ```
 
 ---
+## 🔐 Menu Command
 
+Copy & run this in your terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/menu.sh)
+```
+
+---
 ## 📋 Check Node Status & Logs
 
 - 🔍 **Check if Node is Running:**
