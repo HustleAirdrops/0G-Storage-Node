@@ -26,7 +26,7 @@
 Copy & run this in your terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/installation.sh)
+bash <(curl -s https://raw.githubusercontent.com/HustleAirdrops/0G-Storage-Node/main/simple.sh)
 ```
 
 - 🔑 *When asked, paste your **private key** and hit Enter.*
