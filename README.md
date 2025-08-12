@@ -84,8 +84,7 @@ rm -rf $HOME/0g-storage-node
 3. ✍️ **Paste new RPC when asked.**
 4. **Restart Node:**
     ```bash
-    sudo systemctl stop zgs
-    sudo systemctl start zgs
+    sudo systemctl restart zgs
     ```
 ---
 
