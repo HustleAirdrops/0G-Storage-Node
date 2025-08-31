@@ -14,7 +14,8 @@ echo "🚀 Starting 0G Storage Node Auto Installer..."
 
 # Step 1: Update & install dependencies
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt install -y curl iptables build-essential git wget lz4 jq make cmake gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip screen ufw xdotool
+sudo apt install -y curl iptables build-essential git wget lz4 jq make cmake gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip screen ufw xdotool aria2
+
 
 # Step 2: Install Rust (if not installed)
 if ! command -v rustc &> /dev/null; then
@@ -84,13 +85,19 @@ sleep 60
 
 echo "🛑 Stopping node to apply fast sync..."
 sudo systemctl stop zgs
-rm -rf "$HOME/0g-storage-node/run/db/flow_db"
+rm -rf $HOME/0g-storage-node/run/db
 
 echo "⬇️ Downloading and Extracting fast sync database..."
 
-wget https://snapshot.corenodehq.xyz/0g_testnet/flow_db.tar.gz \
-  -O $HOME/0g-storage-node/run/db/flow_db.tar.gz && \
-  tar -xzvf $HOME/0g-storage-node/run/db/flow_db.tar.gz -C $HOME/0g-storage-node/run/db/
+# Download snapshot with aria2c
+cd $HOME
+aria2c -x 5 -s 5 -o storage-snap.tar.lz4 https://server-4.itrocket.net/testnet/og/storage/og_storage_2025-08-31_5781876_snap.tar.lz4
+
+# Extract snapshot
+tar -I lz4 -xvf $HOME/storage-snap.tar.lz4 -C $HOME/0g-storage-node/run
+
+# Delete snapshot file after extraction
+rm -f $HOME/storage-snap.tar.lz4
   
 echo "🚀 Restarting node with fast sync data..."
 sleep 5
